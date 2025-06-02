@@ -3,6 +3,7 @@ package org.example.rsi12.controller;
 import org.example.rsi12.dao.ItemDao;
 import org.example.rsi12.model.Item;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,8 +41,10 @@ public class ItemController {
     }
 
     @PostMapping()
-    public void putItem(@RequestBody Item item){
+    public ResponseEntity<Void> putItem(@RequestBody Item item){
         itemDao.putItem(item);
+        var location = linkTo(methodOn(ItemController.class).getItemById(item.getId())).toUri();
+        return ResponseEntity.created(location).build();
     }
 
 }
